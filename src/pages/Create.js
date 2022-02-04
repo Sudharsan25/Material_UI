@@ -13,6 +13,7 @@ import {
 import TextField from "@material-ui/core/TextField";
 import { KeyboardArrowRight } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles({
   field: {
@@ -24,6 +25,7 @@ const useStyles = makeStyles({
 
 export default function Create() {
   const classes = useStyles();
+  const history = useHistory();
   const [title, setTitle] = useState("");
   const [titleError, setTitleError] = useState(false);
   const [details, setDetails] = useState("");
@@ -44,7 +46,11 @@ export default function Create() {
     }
 
     if (title && details) {
-      console.log(title, details, category);
+      fetch("http://localhost:8000/notes", {
+        method: "POST",
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify({ title, details, category }),
+      }).then(() => history.push("/"));
     }
   };
 
